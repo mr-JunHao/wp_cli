@@ -23,3 +23,4 @@ module.exports = {
     new CleanWebpackPlugin([utils.resolve(utils.outputConfig.dirName)]),
   ]
 }
+
