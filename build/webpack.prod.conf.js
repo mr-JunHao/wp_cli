@@ -1,5 +1,5 @@
 const utils = require('./utils')
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+
 
 module.exports = {
   mode: "production",
@@ -18,9 +18,6 @@ module.exports = {
         }
       }
     }
-  },
-  plugins: [
-    new CleanWebpackPlugin([utils.resolve(utils.outputConfig.dirName)]),
-  ]
+  }
 }
 

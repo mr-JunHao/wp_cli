@@ -1,7 +1,375 @@
+@import '_reset.scss';
+html,
+body {
+  height: 100%;
+}
 
-.yanse {
-    background: #fff;
-    .child {
-        font-size: 0.24rem;    
+.main {
+  background: url(../img/entry-bg.jpg) 50% 0 no-repeat;
+  background-size: cover;
+  width: 7.5rem;
+  height: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  display: none;
+  &.show{
+    display: block;
+  }
+  .content {
+    margin: 2rem auto 0;
+    width: 5.28rem;
+    overflow: hidden;
+    input {
+      margin: 2.27rem auto 0;
+      width: 3.85rem;
+      height: 0.81rem;
+      background: url(../img/import-text.png) no-repeat;
+      background-size: cover;
+      display: block;
+      padding: 0 .2rem;
+      box-sizing: border-box;
+      text-align: center;
+      color: #ae7e10;
+      &::-webkit-input-placeholder {
+        font-size: 0.25rem;
+        color: #ae7e10;
+      }
     }
+    .submit {
+      width: 3.82rem;
+      height: 1.21rem;
+      background: url(../img/entry-btn.png) no-repeat;
+      background-size: cover;
+      margin: 2.25rem auto 0;
+      display: block;
+    }
+  }
+}
+
+@for $i from 1 through 7 {
+  .quest__#{$i} {
+    background: url(../img/quest-#{$i}.jpg) no-repeat 50% 0;
+    background-size: cover;
+    height: 100%;
+  }
+}
+.quest-wrap,.result-wrap{
+  height: 100%;
+  display: none;
+  &.show{
+    display: block;
+  }
+}
+.result-wrap{
+  overflow: hidden;
+  background: #f5f5f5;
+  .logo{
+    position: absolute;
+    top: 0.15rem;
+    left: 0.15rem;
+    background: url(../img/logo.png) no-repeat;
+    background-size: cover;
+    width: 1.55rem;
+    height: 0.86rem;
+    z-index: 3;
+    display: none;
+  }
+}
+.quest {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: none;
+  &-content {
+    width: 6.5rem;
+    margin: 5.5rem auto 0;
+  }
+  &-list {
+    position: relative;
+    height: 0.9rem;
+    margin-bottom: 0.35rem;
+    background: #7093e0;
+    border-radius: 0.06rem;
+    box-sizing: border-box;
+    opacity: 0;
+    &::before {
+      position: absolute;
+      content: '';
+    }
+    &__a {
+      &::before {
+        top: -0.04rem;
+        left: -0.2rem;
+        background: url(../img/a-icon.png) no-repeat;
+        background-size: cover;
+        width: 0.74rem;
+        height: 0.88rem;
+      }
+    }
+    &__b {
+      &::before {
+        top: -0.04rem;
+        left: -0.12rem;
+        background: url(../img/b-icon.png) no-repeat;
+        background-size: cover;
+        width: 0.6rem;
+        height: 0.94rem;
+      }
+    }
+    &__c {
+      &::before {
+        top: -0.01rem;
+        left: -0.2rem;
+        background: url(../img/c-icon.png) no-repeat;
+        background-size: cover;
+        width: 0.64rem;
+        height: 0.86rem;
+      }
+    }
+    &__d {
+      &::before {
+        top: -0.01rem;
+        left: -0.15rem;
+        background: url(../img/d-icon.png) no-repeat;
+        background-size: cover;
+        width: 0.66rem;
+        height: 0.91rem;
+      }
+    }
+    span {
+      color: #000000;
+      font-size: 0.25rem;
+      background: #fff;
+      border-radius: 0.06rem;
+      height: 0.86rem;
+      padding-left: 0.8rem;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      line-height: 0.32rem;
+      padding-right: 0.3rem;
+    }
+  }
+  &.show {
+    display: block;
+    .quest-list {
+      &__a {
+        animation: fadeUp 0.5s 0s linear forwards;
+      }
+      &__b {
+        animation: fadeUp 0.5s 0.25s linear forwards;
+      }
+      &__c {
+        animation: fadeUp 0.5s 0.5s linear forwards;
+      }
+      &__d {
+        animation: fadeUp 0.5s 0.75s linear forwards;
+      }
+    }
+  }
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0%, 0);
+  }
+}
+
+.num-page {
+  position: absolute;
+  left: 50%;
+  bottom: 0.38rem;
+  margin-left: -.15rem;
+  @for $i from 1 through 6 {
+    &__#{$i} {
+      background: url(../img/num-#{$i}.png) no-repeat;
+      background-size: cover;
+      height: 0.18rem;
+      width: 0.3rem;
+    }
+  }
+}
+
+.sex {
+  background: url(../img/quest-7.jpg) no-repeat 50% 0;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: none;
+  &.show{
+    display: block;
+  }
+  &-option {
+    width: 4.8rem;
+    margin: 3.3rem auto 0;
+    display: flex;
+    justify-content: space-between;
+    a {
+      display: block;
+      width: 2.03rem;
+      height: 2.15rem;
+      transition:transform 0.5s 0s ease;
+      &.active{
+        transform: scale(1.1);
+      }
+    }
+  }
+  &-boy {
+    background: url(../img/nan-1.png) no-repeat 50% 0;
+    background-size: cover;
+  }
+  &-girl {
+    background: url(../img/nv-1.png) no-repeat 50% 0;
+    background-size: cover;
+  }
+  &-submit {
+    background: url(../img/submit-btn.png) no-repeat 50% 0;
+    background-size: cover;
+    width: 3.82rem;
+    height: 1.21rem;
+    margin: 3.2rem auto 0;
+  }
+}
+.result-wrap{
+  position: relative;
+  img.cvs{
+    position: absolute;
+    top: 0;
+    left:50%;
+    transform: translate3d(-50%,0,0);
+    z-index: 4;
+    opacity: 0;
+  }
+}
+.result {
+  position: absolute;
+    height: 100%;
+    z-index: 3;
+    top: 0;
+    left: 0;
+    width: 100%;
+  .open-btn {
+    position: absolute;
+    z-index: 5;
+    right: 0;
+    bottom: 5.2rem;
+    background: url(../img/pop-btn.png) no-repeat;
+    background-size: cover;
+    width: 0.89rem;
+    height: 0.75rem;
+  }
+  .touchsave{
+    position: absolute;
+    z-index: 5;
+    bottom: 0.4rem;
+    left: 50%;
+    margin-left: -.89rem;
+    width: 1.78rem;
+    height: 0.25rem;
+    background: url(../img/save-text.png) no-repeat;
+    background-size: cover;
+  }
+  .handle-btn{
+    position: absolute;
+    z-index: 5;
+    bottom: 1.1rem;
+    left: 50%;
+    margin-left: -2.6rem;
+    width: 5.2rem;
+    height: 0.64rem;
+    display: flex;
+    justify-content: space-between;
+    .restart{
+      background: url(../img/get-btn-2.png) no-repeat;
+      background-size: cover;
+      width: 2.02rem;
+      height: 0.64rem;
+    }
+    .get-sc{
+      background: url(../img/get-btn-1.png) no-repeat;
+      background-size: cover;
+      width: 2.03rem;
+      height: 0.64rem;
+      display: block;
+    }
+  }
+}
+
+.pop{
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+  &.show{
+    display: flex;
+  }
+  .content{
+    position: relative;
+    width: 5.98rem;
+    .close-btn{
+      position: absolute;
+      right: -0.15rem;
+      top: -0.2rem;
+      background: url(../img/close-btn.png) no-repeat;
+      width: 0.3rem;
+      height: 0.34rem;
+      background-size: cover;
+    }
+    img{
+      width: 100%;
+      display: none;
+    }
+  }
+}
+.music-btn{
+  position: fixed;
+  top: -.2rem;
+  right: -0.2rem;
+  width: 1.23rem;
+  height: 1.23rem;
+  z-index: 98;
+  background: url(../img/ms-s.png) no-repeat;
+  background-size: cover;
+  &.stop{
+    background: url(../img/ms-stop.png) no-repeat;
+    background-size: cover;
+  }
+}
+.img-show{
+  position: relative;
+  left: 0;
+  top:0;
+  z-index: 2;
+  .qrcode{
+    position: absolute;
+    right: 0.4rem;
+    top: 8.2rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    img{
+      width: 100%;
+    }
+  }
+  .text{
+    position: absolute;
+    top: 0.18rem;
+    width: 100%;
+    z-index: 3;
+    text-align: center;
+    color: #2a2a2a;
+    font-size: 0.32rem;
+    font-weight: bold;
+  }
 }

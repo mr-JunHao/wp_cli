@@ -3,11 +3,12 @@ const glob = require('glob')
 const utils = require('./utils')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 const extractPlugin = new ExtractTextPlugin({
   filename: "css/[name].css",
   disable: utils.isProduction ? false : true
-});
+})
 
 function getEntries(pattern) {
   let files = glob.sync(pattern);
@@ -17,6 +18,7 @@ function getEntries(pattern) {
   }
   return entries
 }
+
 
 
 //生成多页面
@@ -31,9 +33,10 @@ function exportHTML() {
         minify: isProduction ? {
           removeAttributeQuotes: true // 移除属性的引号
         } : false,
-        hash: true,
+        // hash: true,
         //引用对应块名的js
         chunks: [name],
+        template: `${path.resolve('src')}/${name}.html`,
         filename: `${name}.html`
       })
     )
@@ -41,75 +44,99 @@ function exportHTML() {
   return plugins
 }
 
+let plugins = [
+  ...exportHTML(),
+  new CopyWebpackPlugin([{
+      from: 'src/js/lib',
+      to: 'js/lib'
+    },
+    {
+      from: 'src/media',
+      to: 'media'
+    }
+  ]),
+  extractPlugin
+];
+
+plugins = utils.isProduction ? plugins.unshift(
+  new CleanWebpackPlugin(['dist'], {
+    root: utils.resolve('src')
+  })
+) : plugins
+
 module.exports = {
-  context: utils.resolve('src'),
-  entry: getEntries(utils.resolve('src/entry/*.js')),
+  // context: utils.resolve('src'),
+  entry: getEntries(utils.resolve('src/js/*.js')),
+  resolve: {
+    alias: {
+      'src': utils.resolve('src'),
+      'css': utils.resolve('src/css'),
+      'js': utils.resolve('src/js'),
+      'img': utils.resolve('src/img')
+    }
+  },
   module: {
-    noParse(content){
+    noParse(content) {
       //忽略大型library处理
       return /jquery/.test(content)
     },
-    rules: [
-      {
+    rules: [{
         test: /\.html$/,
-        use: [
-          {
-            loader: 'raw-loader'
+        use: [{
+          loader: 'html-loader',
+          options: {
+            interpolate: true
           }
-        ]
+        }]
       },
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /node_modules|lib/,
         use: {
           loader: 'babel-loader'
         }
       },
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-              outputPath: 'img',
-              name: '[name]_[hash:8].[ext]'
-            }
+        use: [{
+          loader: 'url-loader',
+          options: {
+            limit: 8192,
+            outputPath: 'img',
+            name: '[name].[ext]'
           }
-        ]
+        }]
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              outputPath: 'font',
-              name: '[name]_[hash:8].[ext]'
-            }
+        use: [{
+          loader: 'url-loader',
+          options: {
+            outputPath: 'font',
+            name: '[name].[ext]'
           }
-        ]
+        }]
       },
       {
-        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: {
-              limit: 10000,
-              outputPath: 'media',
-                name: '[name]_[hash:8].[ext]'
-            }
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)$/,
+        use: [{
+          loader: 'url-loader',
+          options: {
+            // limit: 10000,
+            publicPath: 'media',
+            name: '[name].[ext]'
           }
-        ]
+        }]
       },
       {
         test: /\.css$/,
         use: extractPlugin.extract({
           use: [
-            'css-loader'
+            'css-loader',
+            'postcss-loader'
           ],
-          fallback: 'style-loader'
+          fallback: 'style-loader',
+          publicPath: '../'
         })
       },
       {
@@ -117,9 +144,11 @@ module.exports = {
         use: extractPlugin.extract({
           use: [
             'css-loader',
+            'postcss-loader',
             'less-loader'
           ],
-          fallback: 'style-loader'
+          fallback: 'style-loader',
+          publicPath: '../'
         })
       },
       {
@@ -127,9 +156,11 @@ module.exports = {
         use: extractPlugin.extract({
           use: [
             'css-loader',
+            'postcss-loader',
             'sass-loader'
           ],
-          fallback: 'style-loader'
+          fallback: 'style-loader',
+          publicPath: '../'
         })
       },
       {
@@ -137,15 +168,14 @@ module.exports = {
         use: extractPlugin.extract({
           use: [
             'css-loader',
+            'postcss-loader',
             'stylus-loader'
           ],
-          fallback: 'style-loader'
+          fallback: 'style-loader',
+          publicPath: '../'
         })
       }
     ]
   },
-  plugins: [
-    ...exportHTML(),
-    extractPlugin
-  ]
+  plugins
 }

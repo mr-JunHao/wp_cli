@@ -9,5 +9,5 @@ let modeConf = utils.isProduction ?
   require('./webpack.dev.conf');
 
 let webpackConfig = merge(webpackbaseConf, modeConf);
-// console.log(webpackConfig)
+console.log(webpackConfig)
 module.exports = webpackConfig;

@@ -1,4 +1,5 @@
 const utils = require('./utils')
+const webpack = require('webpack')
 module.exports = {
     mode: 'development',
     devtool: 'cheap-module-eval-source-map',
@@ -8,9 +9,9 @@ module.exports = {
     },
     devServer: {
         hot: true,
-        host: '127.0.0.1',
-        port: 3000
-
+        host: '0.0.0.0',
+        port: 3000,
+        inline: true
     },
     plugins: [
         new webpack.NamedModulesPlugin(),
